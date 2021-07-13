@@ -4,6 +4,7 @@ import CategoryCard from './CategoryCard';
 import Pagination from './Pagination/Pagination';
 import categoryListData from './CategoryListData';
 import { GET_BASE_URL } from '../../config';
+import store from '../../store/store';
 
 function Category() {
   const [cardData, setCardData] = useState([]);
@@ -32,10 +33,6 @@ function Category() {
       });
   };
 
-  const updateSelectCategory = (category, categoryName) => {
-    setSelectedCategory({ ...selectedCategory, [category]: categoryName });
-  };
-
   const deleteSelectCategory = category => {
     setSelectedCategory({ ...selectedCategory, [category]: '' });
   };
@@ -47,8 +44,6 @@ function Category() {
   return (
     <>
       <CategoryList
-        selectedCategory={selectedCategory}
-        updateSelectCategory={updateSelectCategory}
         deleteSelectCategory={deleteSelectCategory}
         clearCategoryData={clearCategoryData}
         categoryListData={categoryListData}
