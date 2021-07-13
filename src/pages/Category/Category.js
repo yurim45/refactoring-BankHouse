@@ -4,21 +4,23 @@ import CategoryCard from './CategoryCard';
 import Pagination from './Pagination/Pagination';
 import categoryListData from './CategoryListData';
 import { GET_BASE_URL } from '../../config';
+import store from '../../store/store';
 
-function Category() {
+export default function Category() {
   const [cardData, setCardData] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [postCount, setPostCount] = useState(1);
   const postsPerPage = 16;
   const pageNumber = Math.ceil(postCount / postsPerPage);
 
   useEffect(() => {
-    fetchCardData();
-  }, [selectedCategory]);
+    store.subscribe(() => {
+      fetchCardData();
+    });
+  }, []);
 
   const fetchCardData = () => {
-    const queryString = Object.entries(selectedCategory).map(el => {
+    const queryString = Object.entries(store.getState()).map(el => {
       return el[1].categoryId ? `&${el[0]}=${el[1].categoryId}` : '';
     });
     const result = queryString.join('');
@@ -32,29 +34,10 @@ function Category() {
       });
   };
 
-  const updateSelectCategory = (category, categoryName) => {
-    setSelectedCategory({ ...selectedCategory, [category]: categoryName });
-  };
-
-  const deleteSelectCategory = category => {
-    setSelectedCategory({ ...selectedCategory, [category]: '' });
-  };
-
-  const clearCategoryData = () => {
-    setSelectedCategory({});
-  };
-
   return (
     <>
-      <CategoryList
-        selectedCategory={selectedCategory}
-        updateSelectCategory={updateSelectCategory}
-        deleteSelectCategory={deleteSelectCategory}
-        clearCategoryData={clearCategoryData}
-        categoryListData={categoryListData}
-      />
+      <CategoryList categoryListData={categoryListData} />
       <CategoryCard cardData={cardData} />
-
       <Pagination
         pageNumber={pageNumber}
         paginate={setCurrentPage}
@@ -64,5 +47,3 @@ function Category() {
     </>
   );
 }
-
-export default Category;

@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import store from '../../store/store';
 
-function DropBtn({ el, selectedCategory, updateSelectCategory, selectedArr }) {
+function DropBtn({ el, selectedArr }) {
   const [over, setOver] = useState(false);
-  const selectedValues = Object.values(selectedCategory).map(
+  const selectedValues = Object.values(store.getState()).map(
     el => el.categoryName
   );
   const selectedKey = selectedArr.filter(el => el[1]).map(el => el[0]);
+
   const onClick = (menu2, element) => {
-    updateSelectCategory(menu2, element);
+    store.dispatch({
+      type: 'SELECT',
+      menu2: menu2,
+      element: element,
+    });
   };
 
   return (

@@ -2,34 +2,46 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import DropDown from './DropDown';
 import { flexSet } from '../../styles/Variable';
+import store from '../../store/store';
 
-function CategoryList({
-  selectedCategory,
-  updateSelectCategory,
-  deleteSelectCategory,
-  clearCategoryData,
-  categoryListData,
-}) {
+function CategoryList({ categoryListData }) {
   const [category, setCategory] = useState([]);
-  const selectedArr = Object.entries(selectedCategory).map(el => [
+  const [categoryBtn, setCategoryBtn] = useState([]);
+
+  const selectedArr = Object.entries(store.getState()).map(el => [
     el[0],
     el[1].categoryName,
   ]);
   const selectedValues = selectedArr.map(el => el[1]).filter(el => el);
 
   useEffect(() => {
+    store.subscribe(() => {
+      setCategoryBtn(selectedValues);
+    });
+  }, [categoryBtn]);
+
+  useEffect(() => {
     setCategory(categoryListData);
   }, []);
+
+  const deleteSelectCategory = menuNameEn => {
+    store.dispatch({
+      type: 'DELETE',
+      menu2: menuNameEn,
+      element: '',
+    });
+  };
+
+  const clearCategoryData = () => {
+    store.dispatch({
+      type: 'CLEAR',
+    });
+  };
 
   return (
     <WrapCategory>
       <FilterBar>
-        <DropDown
-          category={category}
-          selectedCategory={selectedCategory}
-          updateSelectCategory={updateSelectCategory}
-          selectedArr={selectedArr}
-        />
+        <DropDown category={category} selectedArr={selectedArr} />
       </FilterBar>
       <CategoryUl>
         {selectedArr.map(el => {
@@ -37,7 +49,7 @@ function CategoryList({
             el[1] && (
               <CategoryName
                 key={el[1]}
-                onClick={() => deleteSelectCategory(el[0], category)}
+                onClick={() => deleteSelectCategory(el[0])}
               >
                 <SelectedBtn>
                   {el[1]}
