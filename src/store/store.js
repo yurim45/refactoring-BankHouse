@@ -3,7 +3,7 @@ import { createStore } from 'redux';
 export default createStore((state, action) => {
   if (state === undefined) {
     return {
-      orderBy: { categoryId: 'recent', categoryName: '최신순' },
+      orderBy: {},
     };
   }
   switch (action.type) {
@@ -22,13 +22,4 @@ export default createStore((state, action) => {
     default:
       return state;
   }
-
-  // if (action.type === 'SELECT') {
-  //   // console.log(state, action);
-  //   return {
-  //     ...state,
-  //     [action.menu2]: action.element,
-  //   };
-  // }
-  // return state;
 }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());

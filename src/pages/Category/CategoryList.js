@@ -4,11 +4,7 @@ import DropDown from './DropDown';
 import { flexSet } from '../../styles/Variable';
 import store from '../../store/store';
 
-function CategoryList({
-  deleteSelectCategory,
-  clearCategoryData,
-  categoryListData,
-}) {
+function CategoryList({ categoryListData }) {
   const [category, setCategory] = useState([]);
   const [categoryBtn, setCategoryBtn] = useState([]);
 
@@ -28,6 +24,20 @@ function CategoryList({
     setCategory(categoryListData);
   }, []);
 
+  const deleteSelectCategory = menuNameEn => {
+    store.dispatch({
+      type: 'DELETE',
+      menu2: menuNameEn,
+      element: '',
+    });
+  };
+
+  const clearCategoryData = () => {
+    store.dispatch({
+      type: 'CLEAR',
+    });
+  };
+
   return (
     <WrapCategory>
       <FilterBar>
@@ -39,7 +49,7 @@ function CategoryList({
             el[1] && (
               <CategoryName
                 key={el[1]}
-                onClick={() => deleteSelectCategory(el[0], category)}
+                onClick={() => deleteSelectCategory(el[0])}
               >
                 <SelectedBtn>
                   {el[1]}

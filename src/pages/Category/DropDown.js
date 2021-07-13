@@ -1,12 +1,7 @@
 import React, { useEffect } from 'react';
 import DropBtn from './DropBtn';
-import store from '../../store/store';
 
 function DropDown({ category, selectedArr }) {
-  useEffect(() => {
-    console.log(store.getState(), category);
-  }, []);
-
   return (
     <React.Fragment>
       {category.length &&
